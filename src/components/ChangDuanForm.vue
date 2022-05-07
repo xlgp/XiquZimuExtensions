@@ -6,11 +6,7 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <el-form-item label="剧种" prop="juZhong">
-          <el-input
-            v-model="formData.juZhong"
-            placeholder="请输入剧种"
-            clearable
-          ></el-input>
+          <el-input v-model="formData.juZhong" placeholder="请输入剧种" clearable></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="12">
@@ -22,20 +18,12 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <el-form-item label="选段" prop="title">
-          <el-input
-            v-model="formData.title"
-            placeholder="请输入选段"
-            clearable
-          ></el-input>
+          <el-input v-model="formData.title" placeholder="请输入选段" clearable></el-input>
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item label="时差" prop="offset">
-          <el-input-number
-            v-model="formData.offset"
-            placeholder="时差"
-            :step="1"
-          ></el-input-number>
+          <el-input-number v-model="formData.offset" placeholder="时差" :step="1"></el-input-number>
         </el-form-item>
       </el-col>
     </el-row>
@@ -45,16 +33,23 @@
         type="textarea"
         ref="contentRef"
         placeholder="请输入或复制唱词"
-        @paste="handlePaste"
         :autosize="{ minRows: 10, maxRows: 25 }"
       ></el-input>
     </el-form-item>
+    <el-form-item label="始时" prop="startTime">
+      <el-input v-model="formData.startTime" placeholder="请输入开始时间">
+        <template #prepend>
+          <el-button @click="getStartTime">获取时间</el-button>
+        </template>
+      </el-input>
+    </el-form-item>
     <el-button type="primary" @click="addShowTime">添加时间</el-button>
-    <el-button> 复制 </el-button>
+    <el-button @click="handleCopy">复制</el-button>
   </el-form>
 </template>
 
 <script lang="ts" setup>
+import { start } from "repl";
 import { ref } from "vue";
 import useWebSite, { WebSiteEnum } from "../hooks/useWebSite.ts";
 
@@ -66,22 +61,15 @@ const formData = ref({
   juZhong: "",
   juMu: "",
   title: "",
-  offset: 0,
+  offset: -15,
   content: "",
+  startTime: ''
 });
 
-const getTime = (time: number) => {
-  let minute = Math.floor(time / 60000);
-  let second = (time % 60000) / 1000;
-  let millis = time % 1000;
-  return (
-    ((minute < 10 && "0" + minute) || minute) +
-    ":" +
-    ((second < 10 && "0" + second) || second) +
-    "." +
-    ((millis < 10 && "0" + millis) || millis)
-  );
-};
+
+const getStartTime = () => {
+  formData.value.startTime = getCurrentTime();
+}
 
 const addShowTime = () => {
   let textarea = contentRef.value.$el.firstElementChild;
@@ -94,21 +82,55 @@ const addShowTime = () => {
   textarea.setSelectionRange(j + 2, j + 2);
 };
 
-const handlePaste = (event: ClipboardEvent) => {
-  if (formData.value.content.trim() == "") {
-    let paste = event.clipboardData?.getData("text");
-    if (paste && paste.trim()) {
-      let list = paste.split("\n").filter((value: string) => value.trim());
-      let time = 7 * 1000;
-      for (let i = 0; i < list.length; i++) {
-        const element = list[i];
-        list[i] = "[" + getTime(time * (i + 1)) + "]" + list[i];
-      }
-      formData.value.content = list.join("\n");
-    }
-    event.preventDefault();
+const handleCopy = () => {
+  console.log(getLrc());
+}
+
+const getLrc = () => {
+  let list = [];
+
+  list.push('[ti:' + formData.value.title + "]");
+  list.push('[jz:' + formData.value.juZhong + "]");
+  list.push('[jm:' + formData.value.juMu + "]");
+  list.push('[ofsset:' + formData.value.offset + "]");
+
+  let contentList = formData.value.content.split('\n');
+  let startTime = str2num(formData.value.startTime);
+
+  for (let i = 0; i < contentList.length; i++) {
+    const element = contentList[i];
+    let ci = element.split(']');
+    let time = str2num(ci[0].substring(1)) - startTime;
+    let changci = '[' + num2str(time) + ']' + ci[1];
+    list.push(changci);
   }
-};
+
+  return list.join('\n');
+}
+
+const str2num = (text: string) => {
+  let textList = text.split(':');
+  //毫秒 和 秒
+  let sms = textList[textList.length - 1].split('.');
+  //毫秒
+  let ms = parseInt(sms[1]);
+  //秒
+  let second = parseInt(sms[0]);
+
+  //分
+  let m = parseInt(textList[textList.length - 2]);
+
+  let c = m * 60 * 1000 + second * 1000 + ms * 10;
+
+  return c;
+}
+
+const num2str = (num: number) => {
+  let m = Math.floor(num / 60000);
+  let s = Math.floor(num % 60000 / 1000);
+  let ms = num % 1000 / 10;
+  return (m < 10 ? '0' + m : m) + ":" + (s < 10 ? '0' + s : s) + "." + (ms < 10 ? '0' + ms : ms);
+}
 
 const rules = {
   juZhong: [
@@ -138,6 +160,13 @@ const rules = {
       message: "时差",
       trigger: "blur",
     },
+  ],
+  startTime: [
+    {
+      required: true,
+      message: '开始时间',
+      trigger: 'blur'
+    }
   ],
   content: [
     {

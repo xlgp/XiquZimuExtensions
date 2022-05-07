@@ -1,34 +1,44 @@
 import useQqVideo from "./useQqVideo";
-import useYouku from "./useYouku"
+import useYouku from "./useYouku";
 
-export enum WebSiteEnum {
-    YOUKU = '优酷',
-    QQVIDEO = '腾讯视频'
-}
+type SiteType = {
+  id: string;
+  name: string;
+  host: string;
+};
 
-let currentWebSite = WebSiteEnum.YOUKU;
+type Site = {
+  [key: string]: SiteType;
+};
 
-const get = (webSite: WebSiteEnum) => {
+export const sites: Site = {
+  YOUKU: { id: "YOUKU", name: "优酷", host: "v.youku.com" },
+  QQVIDEO: { id: "QQVIDEO", name: "腾讯视频", host: "v.qq.com" },
+  BILIBILI: { id: "BILIBILI", name: "哔哩哔哩", host: "www.bilibili.com" },
+};
 
-    switch (webSite) {
-        case WebSiteEnum.YOUKU:
-            return useYouku();
-            break;
-        case WebSiteEnum.QQVIDEO:
-            return useQqVideo();
-        default:
-            break;
-    }
-}
+let currentWebSite: string = sites.YOUKU.id;
 
-export const  setCurrentWebSite = (webSite:WebSiteEnum)=>{
-    currentWebSite = webSite;
-}
+const get = (id: string) => {
+  switch (id) {
+    case sites.YOUKU.id:
+      return useYouku();
+      break;
+    case sites.QQVIDEO.id:
+      return useQqVideo();
+    default:
+      break;
+  }
+};
 
-export default ()=>{
-    return{
-        getCurrentTime:()=>{
-            return get(currentWebSite)?.getCurrentTime();
-        }
-    }
-}
+export const setCurrentWebSite = (id: string) => {
+  currentWebSite = id;
+};
+
+export default () => {
+  return {
+    getCurrentTime: () => {
+      return get(currentWebSite)?.getCurrentTime();
+    },
+  };
+};

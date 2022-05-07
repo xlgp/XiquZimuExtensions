@@ -1,7 +1,17 @@
 <template>
-  <s3-layer v-model="_layerInfo.isShow" :title="title" @yes="handleYes" :shade="0">
-  <ChangDuanForm />  
-  </s3-layer>  
+  <s3-layer
+    v-model="_layerInfo.isShow"
+    :title="title"
+    @yes="handleYes"
+    :shade="0"
+    :area="['auto', '90vh']"
+    :maxmin="true"
+    :type="1"
+  >
+    <div style="margin: 20px;">
+      <ChangDuanForm />
+    </div>
+  </s3-layer>
 </template>
 
 <script setup>
