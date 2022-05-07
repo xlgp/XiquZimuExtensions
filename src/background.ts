@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(
 chrome.action.onClicked.addListener((tab: chrome.tabs.Tab) => {
   console.log(tab);
   if (tab.id) {
-    chrome.tabs.sendMessage(tab.id, { toggleVisible: true });
+    chrome.tabs.sendMessage(tab.id, { key: 'create', value:'' });
   }
 });
 

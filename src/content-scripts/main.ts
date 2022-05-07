@@ -1,30 +1,9 @@
-import { App, createApp } from "vue";
-import ElementPlus from "element-plus";
-import "element-plus/theme-chalk/index.css";
-import ZimuDialog from "../views/ZimuDialog.vue";
+import { App} from "vue";
+import useZimuLayer from "../hooks/useZimuLayer";
 
-const MOUNT_EL_ID = "attonex_clipper";
+const { createVueApp } = useZimuLayer();
 
-let mountEl = document.getElementById(MOUNT_EL_ID);
-if (mountEl) {
-  mountEl.innerHTML = "";
-}
-mountEl = document.createElement("div");
-mountEl.setAttribute("id", MOUNT_EL_ID);
-document.body.appendChild(mountEl);
-
-const vm = createApp(ZimuDialog)
-  .use(ElementPlus)
-  .mount(mountEl);
-
-let visible = false;
-
-((vm as unknown) as App<Element>).provide("toggleVisible", visible);
-
-function toggleVisible(toggleVisible: boolean) {
-  visible = !visible;
-  ((vm as unknown) as App<Element>).provide("toggleVisible", visible);
-}
+let app: App<Element>;
 
 chrome.runtime.onMessage.addListener(
   (
@@ -32,12 +11,10 @@ chrome.runtime.onMessage.addListener(
     sender: chrome.runtime.MessageSender,
     sendResponse: (response?: any) => void
   ) => {
-    console.log(vm);
-    console.log("message", message);
-
-    if (message.toggleVisible) {
-      toggleVisible(message.toggleVisible);
+    if (message.key == 'create') { //创建
+      app = createVueApp();
     }
+
     sendResponse("ok");
   }
 );

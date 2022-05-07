@@ -4,6 +4,7 @@
         :title="title"
         :modal="modal"
         :close-on-press-escape="autoClose"
+        :close-on-click-modal="autoClose"
         draggable
     >
         <Title></Title>
@@ -18,13 +19,35 @@
 </template>
   
   <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, getCurrentInstance } from 'vue'
 import { inject } from 'vue'
 import Title from '../components/Title.vue'
 import ChangCiList from '../components/ChangCiList.vue'
 
-const dialogVisible = inject('toggleVisible', false);
+const props =  defineProps({
+    visible:Boolean
+});
+
+const dialogVisible = ref(props.visible);
 const modal = ref(false);
 const title = ref('提取戏曲伴奏时间');
 const autoClose = ref(false);
 </script>  
+
+<style scoped>
+.zimu-dialog{
+    position: fixed;
+    top: 0;
+}
+.zimu-dialog > div{
+        position: initial;
+}
+.el-overlay-dialog{
+        position: initial;
+            overflow: initial;
+}
+.el-dialog{
+        --el-dialog-width: auto;
+            margin: auto;
+}
+</style>
