@@ -88,7 +88,7 @@ const getStartTime = () => {
 };
 
 const startTimeComputed = computed(() => {
-  return num2str(formData.value.startTime);
+  return num2str(formData.value.startTime, true);
 });
 
 const handleConfig = () => {
@@ -155,15 +155,18 @@ const getLrc = () => {
   return list.join("\n");
 };
 
-const num2str = (num: number) => {
+/**
+ * hasHour 是否需要小时
+ */
+const num2str = (num: number, hasHour: boolean|undefined) => {
   num = Math.floor(num * 1000);
   let h = Math.floor(num / 3600000);
   let m = Math.floor(num / 60000);
   let s = Math.floor((num % 60000) / 1000);
   let ms = Math.floor((num % 1000) / 10);
+  let hStr = (h < 10 ? "0" + h : h) + ":";
   return (
-    (h < 10 ? "0" + h : h) +
-    ":" +
+    ((hasHour && hStr) || "") +
     (m < 10 ? "0" + m : m) +
     ":" +
     (s < 10 ? "0" + s : s) +
