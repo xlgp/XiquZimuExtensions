@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="elForm" :model="formData" :rules="rules">
+  <el-form ref="elForm" :model="formData" :rules="rules" label-width="60px">
     <el-form-item label="来源">
       <webSiteRadioGroup />
     </el-form-item>
@@ -32,12 +32,12 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="8">
+      <el-col :span="12">
         <el-button style="width: 100%" type="primary" @click="addShowTime"
           >添加时间</el-button
         >
       </el-col>
-      <el-col :span="16">
+      <el-col :span="12">
         <el-form-item label="始时" prop="startTime">
           <el-input v-model="startTimeComputed" placeholder="请输入开始时间">
             <template #append>
@@ -64,9 +64,13 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
+import { ElMessage } from "element-plus";
+import "element-plus/theme-chalk/el-message.css";
+import useClipboard from "vue-clipboard3";
 import useWebSite, { WebSiteEnum, setCurrentWebSite } from "../hooks/useWebSite.ts";
 
 const { getCurrentTime } = useWebSite();
+const { toClipboard } = useClipboard();
 
 const contentRef = ref();
 
@@ -113,8 +117,17 @@ const handlePaste = (event: ClipboardEvent) => {
   }
 };
 
-const handleCopy = () => {
-  console.log(getLrc());
+const handleCopy = async () => {
+  try {
+    await toClipboard(getLrc());
+    ElMessage({
+      message: "Congrats, this is a success message.",
+      type: "success",
+    });
+  } catch (e) {
+    console.error(e);
+    ElMessage.error("复制出错了，" + e.message);
+  }
 };
 
 const getLrc = () => {
