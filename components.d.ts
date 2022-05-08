@@ -5,8 +5,6 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    ChangCi: typeof import('./src/components/ChangCi.vue')['default']
-    ChangCiList: typeof import('./src/components/ChangCiList.vue')['default']
     ChangDuanForm: typeof import('./src/components/ChangDuanForm.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
@@ -18,7 +16,6 @@ declare module '@vue/runtime-core' {
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
     WebSiteRadioGroup: typeof import('./src/components/WebSiteRadioGroup.vue')['default']
-    ZimuDialog: typeof import('./src/views/ZimuDialog.vue')['default']
     ZimuLayer: typeof import('./src/views/ZimuLayer.vue')['default']
   }
 }

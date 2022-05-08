@@ -6,22 +6,9 @@
 
 <script lang="ts" setup>
 import { ref, computed } from "vue";
-import { setCurrentWebSite, sites } from "../hooks/useWebSite";
+import { setCurrentWebSite, sites, initCurrentWebSite } from "../hooks/useWebSite";
 
-function initRadio() {
-  let host: string = window.location.host;
-  for (const key in sites) {
-    if (Object.prototype.hasOwnProperty.call(sites, key)) {
-      const element = sites[key];
-      if (element.host == host) {
-        return element.id;
-      }
-    }
-  }
-  return '';
-}
-
-const radio = ref(initRadio());
+const radio = ref(initCurrentWebSite()?.id);
 
 const siteList = computed(() => {
   return Object.values(sites);
@@ -30,6 +17,5 @@ const siteList = computed(() => {
 const change = (value: string) => {
   console.log("change", value);
   setCurrentWebSite(value);
-}
-
+};
 </script>

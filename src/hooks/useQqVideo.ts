@@ -1,12 +1,13 @@
 export default () => {
+
+  let video:HTMLMediaElement = getVideo();
+
+  function getVideo(){ //直接取dom, 应该要先判断一下，dom是否存在
+    return $('video')[0] as HTMLMediaElement;
+  }
+
   function getCurrentTime() {
-    let innerText = $(".txp_time_current")[0].innerText;
-    if (innerText.length == 5) {
-      return innerText + ".00";
-    } else if (innerText.length == 8) {
-      return innerText.substring(3) + ".00";
-    }
-    return "";
+    return video.currentTime;
   }
 
   return {

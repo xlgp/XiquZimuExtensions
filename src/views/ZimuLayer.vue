@@ -2,7 +2,6 @@
   <s3-layer
     v-model="_layerInfo.isShow"
     :title="title"
-    @yes="handleYes"
     :shade="0"
     :area="['auto', '90vh']"
     :maxmin="true"

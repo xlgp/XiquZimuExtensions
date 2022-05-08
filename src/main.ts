@@ -1,6 +1,9 @@
+import { createApp } from 'vue'
+import { s3Layer } from 'vue3-layer';
+import 'vue3-layer/dist/s3Layer.css';
 
-import useZimuLayer from "./hooks/useZimuLayer";
+import App from './App.vue'
 
-const { createVueApp } = useZimuLayer();
+const app = createApp(App);
 
-createVueApp();
+app.component('s3-layer', s3Layer).mount('#app');

@@ -17,13 +17,12 @@ export const sites: Site = {
   BILIBILI: { id: "BILIBILI", name: "哔哩哔哩", host: "www.bilibili.com" },
 };
 
-let currentWebSite: string = sites.YOUKU.id;
+let webSite: any;
 
 const get = (id: string) => {
   switch (id) {
     case sites.YOUKU.id:
       return useYouku();
-      break;
     case sites.QQVIDEO.id:
       return useQqVideo();
     default:
@@ -31,14 +30,27 @@ const get = (id: string) => {
   }
 };
 
-export const setCurrentWebSite = (id: string) => {
-  currentWebSite = id;
+export function initCurrentWebSite(): SiteType {
+  let host: string = window.location.host;
+  for (const key in sites) {
+    if (Object.prototype.hasOwnProperty.call(sites, key)) {
+      const element = sites[key];
+      if (element.host == host) {
+        return element;
+      }
+    }
+  }
+  return {} as unknown as SiteType;
+}
+
+export const setCurrentWebSite = (id: string | undefined) => {
+  webSite = get(id || initCurrentWebSite().id);
 };
 
 export default () => {
   return {
     getCurrentTime: () => {
-      return get(currentWebSite)?.getCurrentTime();
+      return webSite?.getCurrentTime();
     },
   };
 };

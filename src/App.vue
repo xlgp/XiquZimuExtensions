@@ -1,22 +1,18 @@
 <template>
-  <ZimuLayer :layerInfo="layerInfo"/>
-  <el-button @click="handleClick">发射点发射点发射点</el-button>
+  <el-button type="primary" @click="changeVisible">原始按钮</el-button>
+  <ZimuLayer :layerInfo="layerInfo" />
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { ref, reactive } from "vue";
 
-/**
- * layerInfo
- * 因为此处父子组件都需要控制弹出层，
- * 所以使用object形式，父子组件直接操作layerInfo对象。
- */
-const layerInfo = reactive({
-isShow: false,
-})
+const visible = ref(false);
 
-const handleClick = ()=>{
+const layerInfo = reactive({ isShow: false });
+
+const data = ref(2);
+
+const changeVisible = () => {
   layerInfo.isShow = !layerInfo.isShow;
-}
-
+};
 </script>

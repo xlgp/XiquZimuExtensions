@@ -1,7 +1,8 @@
 import { App, createApp, reactive } from "vue";
-import ZimuLayer from "../views/ZimuLayer.vue";
 import { s3Layer } from 'vue3-layer';
 import 'vue3-layer/dist/s3Layer.css';
+
+import ZimuLayer from "../views/ZimuLayer.vue";
 
 export default () => {
 
@@ -29,7 +30,7 @@ export default () => {
 
         let mountEl = document.getElementById(MOUNT_EL_ID);
         if (mountEl) {
-            mountEl.innerHTML = "";
+            mountEl.remove();
         }
         mountEl = document.createElement("div");
         mountEl.setAttribute("id", MOUNT_EL_ID);
