@@ -6,7 +6,6 @@
     :area="['auto', '90vh']"
     :maxmin="true"
     :type="1"
-    offset="rt"
   >
     <div style="margin: 20px;">
       <ChangDuanForm />
