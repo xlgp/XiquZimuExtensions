@@ -15,7 +15,10 @@ declare module '@vue/runtime-core' {
     ElRadio: typeof import('element-plus/es')['ElRadio']
     ElRadioGroup: typeof import('element-plus/es')['ElRadioGroup']
     ElRow: typeof import('element-plus/es')['ElRow']
+    ElTabPane: typeof import('element-plus/es')['ElTabPane']
+    ElTabs: typeof import('element-plus/es')['ElTabs']
     WebSiteRadioGroup: typeof import('./src/components/WebSiteRadioGroup.vue')['default']
+    ZimuConfig: typeof import('./src/components/ZimuConfig.vue')['default']
     ZimuLayer: typeof import('./src/views/ZimuLayer.vue')['default']
   }
 }

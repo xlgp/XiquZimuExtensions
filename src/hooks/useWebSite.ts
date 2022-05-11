@@ -1,3 +1,4 @@
+import useBilibili from "./useBilibili";
 import useQqVideo from "./useQqVideo";
 import useYouku from "./useYouku";
 
@@ -25,6 +26,8 @@ const get = (id: string) => {
       return useYouku();
     case sites.QQVIDEO.id:
       return useQqVideo();
+    case sites.BILIBILI.id:
+      return useBilibili();
     default:
       break;
   }
@@ -40,11 +43,15 @@ export function initCurrentWebSite(): SiteType {
       }
     }
   }
-  return {} as unknown as SiteType;
+  return ({} as unknown) as SiteType;
 }
 
 export const setCurrentWebSite = (id: string | undefined) => {
   webSite = get(id || initCurrentWebSite().id);
+};
+
+export const setVideoDom = (dom: HTMLElement) => {
+  webSite?.setVideo(dom);
 };
 
 export default () => {

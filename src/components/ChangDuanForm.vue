@@ -23,19 +23,13 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="时差" prop="offset">
-          <el-input-number
-            v-model="formData.offset"
-            placeholder="时差"
-            :step="1"
-          ></el-input-number>
+          <el-input-number v-model="formData.offset" placeholder="时差" :step="1"></el-input-number>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="12">
-        <el-button style="width: 100%" type="primary" @click="addShowTime"
-          >添加时间</el-button
-        >
+        <el-button style="width: 100%" type="primary" @click="addShowTime">添加时间</el-button>
       </el-col>
       <el-col :span="12">
         <el-form-item label="始时" prop="startTime">
@@ -58,7 +52,6 @@
       ></el-input>
     </el-form-item>
     <el-button @click="handleCopy">复制</el-button>
-    <el-button @click="handleConfig">配置</el-button>
   </el-form>
 </template>
 
@@ -67,7 +60,7 @@ import { ref, computed } from "vue";
 import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useClipboard from "vue-clipboard3";
-import useWebSite, { WebSiteEnum, setCurrentWebSite } from "../hooks/useWebSite.ts";
+import useWebSite, { WebSiteEnum } from "../hooks/useWebSite.ts";
 
 const { getCurrentTime } = useWebSite();
 const { toClipboard } = useClipboard();
@@ -90,10 +83,6 @@ const getStartTime = () => {
 const startTimeComputed = computed(() => {
   return num2str(formData.value.startTime, true);
 });
-
-const handleConfig = () => {
-  setCurrentWebSite();
-};
 
 const addShowTime = () => {
   let textarea = contentRef.value.$el.firstElementChild;
@@ -158,7 +147,7 @@ const getLrc = () => {
 /**
  * hasHour 是否需要小时
  */
-const num2str = (num: number, hasHour: boolean|undefined) => {
+const num2str = (num: number, hasHour: boolean | undefined) => {
   num = Math.floor(num * 1000);
   let h = Math.floor(num / 3600000);
   let m = Math.floor(num / 60000);

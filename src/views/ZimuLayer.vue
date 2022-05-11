@@ -7,9 +7,14 @@
     :maxmin="true"
     :type="1"
   >
-    <div style="margin: 20px;">
-      <ChangDuanForm />
-    </div>
+    <el-tabs style="margin: 20px;">
+      <el-tab-pane label="功能">
+        <ChangDuanForm />
+      </el-tab-pane>
+      <el-tab-pane label="配置">
+        <ZimuConfig />
+      </el-tab-pane>
+    </el-tabs>
   </s3-layer>
 </template>
 
