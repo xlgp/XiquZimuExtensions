@@ -6,7 +6,22 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <el-form-item label="剧种" prop="juZhong">
-          <el-input v-model="formData.juZhong" placeholder="请输入剧种"></el-input>
+          <el-select
+            v-model="formData.juZhong"
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="请输入剧种"
+            :popper-append-to-body="false"
+          >
+            <el-option
+              v-for="(item, index) in juZhongList"
+              :key="index"
+              :label="item"
+              :value="item"
+            />
+          </el-select>
         </el-form-item>
       </el-col>
       <el-col :span="12">
@@ -56,24 +71,27 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useClipboard from "vue-clipboard3";
-import useWebSite, { WebSiteEnum } from "../hooks/useWebSite.ts";
+import useWebSite, { WebSiteEnum } from "../hooks/useWebSite";
+import { JUZHONGLIST } from '../data/XiquConstant';
 
 const { getCurrentTime } = useWebSite();
 const { toClipboard } = useClipboard();
 
 const contentRef = ref();
 
+const juZhongList = reactive(JUZHONGLIST);
+
 const formData = ref({
-  juZhong: "",
+  juZhong: juZhongList[0],
   juMu: "",
   title: "",
   offset: -15,
   content: "",
-  startTime: "",
+  startTime: 0,
 });
 
 const getStartTime = () => {
