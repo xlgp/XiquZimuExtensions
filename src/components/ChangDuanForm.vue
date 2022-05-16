@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="elForm" :model="formData" :rules="rules" label-width="60px">
+  <el-form ref="zimuFormRef" :model="formData" :rules="rules" label-width="60px">
     <el-form-item label="来源">
       <webSiteRadioGroup />
     </el-form-item>
@@ -38,13 +38,19 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="时差" prop="offset">
-          <el-input-number v-model="formData.offset" placeholder="时差" :step="1"></el-input-number>
+          <el-input-number
+            v-model="formData.offset"
+            placeholder="时差"
+            :step="1"
+          ></el-input-number>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row>
       <el-col :span="12">
-        <el-button style="width: 100%" type="primary" @click="addShowTime">添加时间</el-button>
+        <el-button style="width: 100%" type="primary" @click="addShowTime"
+          >添加时间</el-button
+        >
       </el-col>
       <el-col :span="12">
         <el-form-item label="始时" prop="startTime">
@@ -66,21 +72,25 @@
         @paste="handlePaste"
       ></el-input>
     </el-form-item>
-    <el-button @click="handleCopy">复制</el-button>
+    <el-form-item>
+      <el-button plain type="primary" @click="handleCopy">复制</el-button>
+      <el-button @click="resetForm(zimuFormRef)">重置</el-button>
+    </el-form-item>
   </el-form>
 </template>
 
 <script lang="ts" setup>
 import { ref, computed, reactive, onMounted } from "vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, FormInstance } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useClipboard from "vue-clipboard3";
 import useWebSite, { WebSiteEnum } from "../hooks/useWebSite";
-import { JUZHONGLIST } from '../data/XiquConstant';
+import { JUZHONGLIST } from "../data/XiquConstant";
 
 const { getCurrentTime } = useWebSite();
 const { toClipboard } = useClipboard();
 
+const zimuFormRef = ref();
 const contentRef = ref();
 
 const juZhongList = reactive(JUZHONGLIST);
@@ -112,6 +122,11 @@ onMounted(() => {
   init();
   unloadListener();
 });
+
+const resetForm = (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.resetFields();
+};
 
 const getStartTime = () => {
   formData.value.startTime = getCurrentTime();
