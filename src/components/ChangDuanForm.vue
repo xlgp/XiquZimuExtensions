@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, onMounted } from "vue";
 import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useClipboard from "vue-clipboard3";
@@ -92,6 +92,25 @@ const formData = ref({
   offset: -15,
   content: "",
   startTime: 0,
+});
+
+const storageKey = "__ZIMU_CHANGDUAN_FORM";
+function init() {
+  let storageValue = localStorage.getItem(storageKey);
+  if (storageValue) {
+    formData.value = JSON.parse(storageValue);
+  }
+}
+
+function unloadListener() {
+  window.addEventListener("unload", function (event) {
+    localStorage.setItem(storageKey, JSON.stringify(formData.value));
+  });
+}
+
+onMounted(() => {
+  init();
+  unloadListener();
 });
 
 const getStartTime = () => {
