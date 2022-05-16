@@ -51,7 +51,7 @@ export const setCurrentWebSite = (id: string | undefined) => {
 };
 
 export const setVideoDom = (dom: HTMLElement) => {
-  webSite?.setVideo(dom);
+  webSite.setVideo(dom);  
 };
 
 export default () => {

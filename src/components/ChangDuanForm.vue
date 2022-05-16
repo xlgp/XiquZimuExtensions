@@ -112,9 +112,13 @@ function init() {
   }
 }
 
+function storageData(){
+localStorage.setItem(storageKey, JSON.stringify(formData.value));
+}
+
 function unloadListener() {
   window.addEventListener("unload", function (event) {
-    localStorage.setItem(storageKey, JSON.stringify(formData.value));
+    storageData();
   });
 }
 
@@ -126,6 +130,7 @@ onMounted(() => {
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.resetFields();
+  storageData();
 };
 
 const getStartTime = () => {
