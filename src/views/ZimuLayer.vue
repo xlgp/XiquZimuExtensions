@@ -6,6 +6,7 @@
     :area="['70vh', '90vh']"
     :maxmin="true"
     :type="1"
+    offset="rt"
   >
     <el-scrollbar height="83vh">
       <el-tabs style="margin: 20px">
@@ -30,8 +31,4 @@ const props = defineProps({
 const _layerInfo = props.layerInfo;
 
 const title = ref("提取戏曲伴奏时间");
-
-const handleYes = (index, layero) => {
-  _layerInfo.isShow = false;
-};
 </script>

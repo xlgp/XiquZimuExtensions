@@ -10,8 +10,6 @@ const visible = ref(false);
 
 const layerInfo = reactive({ isShow: false });
 
-const data = ref(2);
-
 const changeVisible = () => {
   layerInfo.isShow = !layerInfo.isShow;
 };
