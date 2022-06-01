@@ -18,6 +18,7 @@ chrome.runtime.onMessage.addListener(
     sendResponse: (response?: any) => void
   ) => {
     console.log(message);
+    sendResponse(message);
   }
 );
 
