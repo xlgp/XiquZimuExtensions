@@ -1,8 +1,11 @@
 {
     "name": "幕-提取字幕提取插件",
     "description": "一款用于提取网页上提取字幕及伴奏的插件。",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "manifest_version": 3,
+    "icons": {
+        "128": "assets/logo.png"
+    },
     "background": {
         "service_worker": "background.js"
     },
