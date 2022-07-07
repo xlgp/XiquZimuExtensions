@@ -21,14 +21,12 @@
   </s3-layer>
 </template>
 
-<script setup>
-import { ref } from "vue";
+<script setup lang="ts">
+import { ref, reactive } from "vue";
 
-const props = defineProps({
-  layerInfo: Object,
+const _layerInfo = reactive({
+  isShow: true,
 });
-
-const _layerInfo = props.layerInfo;
 
 const title = ref("提取戏曲伴奏时间");
 </script>

@@ -1,8 +1,5 @@
 <template>
   <el-form ref="zimuFormRef" :model="formData" :rules="rules" label-width="60px">
-    <el-form-item label="来源">
-      <webSiteRadioGroup />
-    </el-form-item>
     <el-row :gutter="10">
       <el-col :span="12">
         <el-form-item label="剧种" prop="juZhong">
@@ -84,7 +81,7 @@ import { ref, computed, reactive, onMounted } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useClipboard from "vue-clipboard3";
-import useWebSite, { WebSiteEnum } from "../hooks/useWebSite";
+import useWebSite from "../hooks/useWebSite";
 import { JUZHONGLIST } from "../data/XiquConstant";
 
 const { getCurrentTime } = useWebSite();
@@ -112,8 +109,8 @@ function init() {
   }
 }
 
-function storageData(){
-localStorage.setItem(storageKey, JSON.stringify(formData.value));
+function storageData() {
+  localStorage.setItem(storageKey, JSON.stringify(formData.value));
 }
 
 function unloadListener() {
@@ -154,7 +151,7 @@ const addShowTime = () => {
 
 const handlePaste = (event: ClipboardEvent) => {
   if (formData.value.content.trim() == "") {
-    let paste = event.clipboardData.getData("text");
+    let paste = event?.clipboardData?.getData("text");
     if (paste && paste.trim()) {
       let list = paste.split("\n").filter((value) => value.trim());
       formData.value.content = list.join("\n");
@@ -170,9 +167,9 @@ const handleCopy = async () => {
       message: "Congrats, this is a success message.",
       type: "success",
     });
-  } catch (e) {
+  } catch (e: any) {
     console.error(e);
-    ElMessage.error("复制出错了，" + e.message);
+    ElMessage.error("复制出错了, " + e.message);
   }
 };
 
@@ -194,7 +191,7 @@ const getLrc = () => {
       list.push(ci);
     } else {
       let time = Number(ci[0].substring(1)) - startTime;
-      let changci = "[" + num2str(time) + "]" + ci[1];
+      let changci = "[" + num2str(time, false) + "]" + ci[1];
       list.push(changci);
     }
   }

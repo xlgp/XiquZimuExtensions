@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import { setCurrentWebSite, setVideoDom } from "../hooks/useWebSite.ts";
+import { setCurrentWebSite, setVideoDom } from "../hooks/useWebSite";
 const handleConfig = () => {
   setCurrentWebSite();
 };
@@ -35,19 +35,21 @@ const handleZhixing = (e: Event) => {
   let key = formData.key;
   if (key && key.trim()) {
     try {
-      let dom = "";
+      let dom = (null as unknown) as HTMLElement;
       if (key.startsWith(".")) {
         // css
-        dom = document.getElementsByClassName(key.substring("."))[formData.index];
+        dom = document.getElementsByClassName(key.substring(1))[
+          formData.index
+        ] as HTMLElement;
       } else if (key.startsWith("#")) {
         // id, 只有一个，不需要index
-        dom = document.getElementById(key.substring("#"));
+        dom = document.getElementById(key.substring(1)) as HTMLElement;
       } else {
         //tag
-        dom = document.getElementsByTagName(key)[formData.index];
+        dom = document.getElementsByTagName(key)[formData.index] as HTMLElement;
       }
       setVideoDom(dom);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       zhixingError.value = error.message;
     }

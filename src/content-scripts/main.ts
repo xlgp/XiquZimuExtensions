@@ -1,6 +1,8 @@
 import { App} from "vue";
 import useZimuLayer from "../hooks/useZimuLayer";
 
+/// <reference types="chrome"/>
+
 const { createVueApp } = useZimuLayer();
 
 let app: App<Element>;
