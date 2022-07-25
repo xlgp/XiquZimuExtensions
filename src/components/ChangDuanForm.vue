@@ -82,7 +82,7 @@ import { ElMessage, FormInstance } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useClipboard from "vue-clipboard3";
 import useWebSite from "../hooks/useWebSite";
-import { JUZHONGLIST } from "../data/XiquConstant";
+import { JUZHONGLIST, END_TAG_CONTENT } from "../data/XiquConstant";
 
 const { getCurrentTime } = useWebSite();
 const { toClipboard } = useClipboard();
@@ -154,6 +154,7 @@ const handlePaste = (event: ClipboardEvent) => {
     let paste = event?.clipboardData?.getData("text");
     if (paste && paste.trim()) {
       let list = paste.split("\n").filter((value) => value.trim());
+      list.push(END_TAG_CONTENT);
       formData.value.content = list.join("\n");
     }
     event.preventDefault();
@@ -164,7 +165,7 @@ const handleCopy = async () => {
   try {
     await toClipboard(getLrc());
     ElMessage({
-      message: "Congrats, this is a success message.",
+      message: "已复制",
       type: "success",
     });
   } catch (e: any) {
