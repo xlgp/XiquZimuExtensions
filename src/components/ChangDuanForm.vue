@@ -178,8 +178,10 @@ const getLrc = () => {
   let list = [];
 
   list.push("[ti:" + formData.value.title + "]");
+  list.push("[oti:" + formData.value.title + "]");
   list.push("[jz:" + formData.value.juZhong + "]");
   list.push("[jm:" + formData.value.juMu + "]");
+  list.push("[ojm:" + formData.value.juMu + "]");
   list.push("[ofsset:" + formData.value.offset + "]");
 
   let contentList = formData.value.content.split("\n");
