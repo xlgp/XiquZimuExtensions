@@ -1,7 +1,7 @@
 import useBilibili from "./useBilibili";
 import useQqVideo from "./useQqVideo";
 import useYouku from "./useYouku";
-import useVideoDom from './useVideoDom'
+import useMediaDom from './useMediaDom'
 
 type SiteType = {
   id: string;
@@ -31,7 +31,7 @@ const get = (id: string) => {
     case sites.BILIBILI.id:
       return useBilibili();
     default:
-      return useVideoDom();
+      return useMediaDom();
   }
 };
 
@@ -49,11 +49,11 @@ export function initCurrentWebSite(): SiteType {
 }
 
 export const setCurrentWebSite = (id?: string) => {
-  webSite = useVideoDom();
+  webSite = useMediaDom();
 };
 
 export const setVideoDom = (dom: HTMLElement) => {
-  webSite.setVideo(dom);
+  webSite.setMedia(dom);
 };
 
 export default () => {
@@ -61,5 +61,8 @@ export default () => {
     getCurrentTime: () => {
       return webSite?.getCurrentTime();
     },
+    setCurrentTime(time: number) {
+      webSite.setCurrentTime(time);
+    }
   };
 };
