@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive, onMounted, nextTick } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useClipboard from "vue-clipboard3";
@@ -117,7 +117,7 @@ const resetForm = (formEl: FormInstance | undefined) => {
 const getStartTime = () => {
   formData.value.startTime = getCurrentTime();
 };
-const setStartTime = ()=>{
+const setStartTime = () => {
   formData.value.startTime = 0;
 }
 

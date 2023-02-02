@@ -9,8 +9,8 @@
         "watch": "vite build --watch"
     },
     "dependencies": {
-        "element-plus": "^2.1.11",
-        "vue": "^3.2.25",
+        "element-plus": "^2.2.28",
+        "vue": "^3.2.46",
         "vue-clipboard3": "^2.0.0",
         "vue3-layer": "^1.0.18"
     },
