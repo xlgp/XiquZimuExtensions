@@ -30,8 +30,8 @@
     <el-form-item label="始时" prop="startTime">
       <el-input v-model="formData.startTime" placeholder="请输入开始时间">
         <template #append>
-          <el-button @click="getStartTime">获取时间</el-button>
-          <el-button @click="setStartTime">启始时间</el-button>
+          <el-button @click="setStartTime">启始</el-button>
+          <el-button @click="getStartTime">当前</el-button>
         </template>
       </el-input>
     </el-form-item>
