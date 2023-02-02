@@ -28,9 +28,10 @@
       </el-col>
     </el-row>
     <el-form-item label="始时" prop="startTime">
-      <el-input v-model="startTimeComputed" placeholder="请输入开始时间">
+      <el-input v-model="formData.startTime" placeholder="请输入开始时间">
         <template #append>
           <el-button @click="getStartTime">获取时间</el-button>
+          <el-button @click="setStartTime">启始时间</el-button>
         </template>
       </el-input>
     </el-form-item>
@@ -116,10 +117,9 @@ const resetForm = (formEl: FormInstance | undefined) => {
 const getStartTime = () => {
   formData.value.startTime = getCurrentTime();
 };
-
-const startTimeComputed = computed(() => {
-  return num2str(formData.value.startTime, true);
-});
+const setStartTime = ()=>{
+  formData.value.startTime = 0;
+}
 
 const getShowTime = (value: string, separator: string, textareaEl: HTMLTextAreaElement) => {
   let selectionEnd = textareaEl.selectionEnd;
