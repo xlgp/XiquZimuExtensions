@@ -22,19 +22,29 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
+        <el-form-item label="版本" prop="version">
+          <el-input v-model="formData.version" placeholder="唱段版本（可不填）"></el-input>
+        </el-form-item>
+      </el-col>
+    </el-row>
+    <el-row :gutter="10">
+      <el-col :span="12">
+        <el-form-item label="始时" prop="startTime">
+          <el-input v-model="formData.startTime" placeholder="请输入开始时间">
+            <template #append>
+              <el-button @click="setStartTime">启始</el-button>
+              <el-button @click="getStartTime">当前</el-button>
+            </template>
+          </el-input>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
         <el-form-item label="时差" prop="offset">
           <el-input-number v-model="formData.offset" placeholder="时差" :step="1"></el-input-number>
         </el-form-item>
       </el-col>
     </el-row>
-    <el-form-item label="始时" prop="startTime">
-      <el-input v-model="formData.startTime" placeholder="请输入开始时间">
-        <template #append>
-          <el-button @click="setStartTime">启始</el-button>
-          <el-button @click="getStartTime">当前</el-button>
-        </template>
-      </el-input>
-    </el-form-item>
+
     <el-form-item prop="content">
       <el-button class="add-btn" type="primary" @click="addShowTime">
         <span>添加时间</span>
@@ -76,6 +86,7 @@ const formData = ref({
   title: "",
   offset: -15,
   content: "",
+  version: '',
   startTime: 0,
 });
 
@@ -180,6 +191,7 @@ const getLrc = () => {
   list.push("[jz:" + formData.value.juZhong + "]");
   list.push("[jm:" + formData.value.juMu + "]");
   list.push("[ojm:" + formData.value.juMu + "]");
+  list.push("[ver:" + formData.value.version + "]");
   list.push("[offset:" + formData.value.offset + "]");
 
   let contentList = formData.value.content.split("\n");

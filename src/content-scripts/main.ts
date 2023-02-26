@@ -1,4 +1,4 @@
-import { App} from "vue";
+import { App } from "vue";
 import useZimuLayer from "../hooks/useZimuLayer";
 
 /// <reference types="chrome"/>

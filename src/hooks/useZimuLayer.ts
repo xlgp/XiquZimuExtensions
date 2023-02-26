@@ -19,6 +19,7 @@ export default () => {
 
   function createVueApp() {
     const mountEl = createElement();
+    
     const app: App<Element> = createApp(ZimuLayer, { layerInfo: getOptions() });
     app.component("s3-layer", s3Layer).mount(mountEl);
     setCurrentWebSite();
