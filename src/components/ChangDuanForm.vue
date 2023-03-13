@@ -49,9 +49,12 @@
       <el-button class="add-btn" type="primary" @click="addShowTime">
         <span>添加时间</span>
       </el-button>
-      <el-input type="textarea" :rows="16" v-model="formData.content" ref="contentRef" placeholder="请输入或复制唱词"
+      <el-input type="textarea" :rows="14" v-model="formData.content" ref="contentRef" placeholder="请输入或复制唱词"
         @paste="handlePaste">
       </el-input>
+    </el-form-item>
+    <el-form-item label="关键词" prop="searchKeys">
+      <el-input v-model="formData.searchKeys" placeholder="关键词以逗号隔开"></el-input>
     </el-form-item>
     <el-form-item>
       <el-button plain type="primary" @click="handleCopy">复制</el-button>
@@ -86,7 +89,8 @@ const formData = ref({
   title: "",
   offset: -15,
   content: "",
-  version: '',
+  version: "",
+  searchKeys: "",
   startTime: 0,
 });
 
@@ -186,13 +190,14 @@ const handleCopy = async () => {
 const getLrc = () => {
   let list = [];
 
-  list.push("[ti:" + formData.value.title + "]");
-  list.push("[oti:" + formData.value.title + "]");
-  list.push("[jz:" + formData.value.juZhong + "]");
-  list.push("[jm:" + formData.value.juMu + "]");
-  list.push("[ojm:" + formData.value.juMu + "]");
-  list.push("[ver:" + formData.value.version + "]");
-  list.push("[offset:" + formData.value.offset + "]");
+  list.push("[ti:" + (formData.value.title || "") + "]");
+  list.push("[oti:" + (formData.value.title || "") + "]");
+  list.push("[jz:" + (formData.value.juZhong || "") + "]");
+  list.push("[jm:" + (formData.value.juMu || "") + "]");
+  list.push("[ojm:" + (formData.value.juMu || "") + "]");
+  list.push("[ver:" + (formData.value.version || "") + "]");
+  list.push("[offset:" + (formData.value.offset || 0) + "]");
+  list.push("[keys:" + (formData.value.searchKeys || "") + "]");
 
   let contentList = formData.value.content.split("\n");
   let startTime = formData.value.startTime;
