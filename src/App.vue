@@ -4,9 +4,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
-
-const visible = ref(false);
+import { reactive } from "vue";
 
 const layerInfo = reactive({ isShow: false });
 

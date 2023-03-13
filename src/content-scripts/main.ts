@@ -1,11 +1,8 @@
-import { App } from "vue";
 import useZimuLayer from "../hooks/useZimuLayer";
 
 /// <reference types="chrome"/>
 
 const { createVueApp } = useZimuLayer();
-
-let app: App<Element>;
 
 chrome.runtime.onMessage.addListener(
   (
@@ -14,7 +11,7 @@ chrome.runtime.onMessage.addListener(
     sendResponse: (response?: any) => void
   ) => {
     if (message.key == 'create') { //创建
-      app = createVueApp();
+      createVueApp();
     }
 
     sendResponse("ok");

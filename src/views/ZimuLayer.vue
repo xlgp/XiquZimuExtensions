@@ -8,6 +8,7 @@
     :type="1"
     offset="rt"
   >
+  <el-config-provider :z-index="zIndex">
     <el-scrollbar height="83vh">
       <el-tabs style="margin: 20px">
         <el-tab-pane label="功能">
@@ -18,6 +19,7 @@
         </el-tab-pane>
       </el-tabs>
     </el-scrollbar>
+  </el-config-provider>
   </s3-layer>
 </template>
 
@@ -29,4 +31,5 @@ const _layerInfo = reactive({
 });
 
 const title = ref("提取戏曲伴奏时间");
+const zIndex = 19891016;
 </script>
