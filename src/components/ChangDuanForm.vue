@@ -162,12 +162,18 @@ const addShowTime = () => {
   textareaEl.setSelectionRange(j + 2, j + 2);
 };
 
+const hasEndTag = (content: string) => {
+  return content.includes(END_TAG_CONTENT);
+}
+
 const handlePaste = (event: ClipboardEvent) => {
   if (formData.value.content.trim() == "") {
     let paste = event?.clipboardData?.getData("text");
     if (paste && paste.trim()) {
       let list = paste.split("\n").filter((value) => value.trim()).map(value => value.replace(/\r/g, ""));
-      list.push(END_TAG_CONTENT);
+      if (!hasEndTag(list[list.length - 1])) {
+        list.push(END_TAG_CONTENT);
+      }
       formData.value.content = list.join("\n");
     }
     event.preventDefault();
