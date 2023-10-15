@@ -11,10 +11,12 @@ export default () => {
     }
 
     function getCurrentTime() {
+        media = media || getMedia();
         return media.currentTime;
     }
 
     function setCurrentTime(time: number) {
+        media = media || getMedia();
         media.currentTime = time;
     }
 
