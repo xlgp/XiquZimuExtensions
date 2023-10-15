@@ -49,7 +49,7 @@
       <el-button class="add-btn" type="primary" @click="addShowTime">
         <span>添加时间</span>
       </el-button>
-      <el-input type="textarea" :rows="14" v-model="formData.content" ref="contentRef" placeholder="请输入或复制唱词"
+      <el-input type="textarea" :autosize="autosize" v-model="formData.content" ref="contentRef" placeholder="请输入或复制唱词"
         @paste="handlePaste">
       </el-input>
     </el-form-item>
@@ -80,6 +80,8 @@ const contentRef = ref();
 let textareaEl: HTMLTextAreaElement = undefined as unknown as HTMLTextAreaElement;
 
 const juZhongList = reactive(JUZHONGLIST);
+
+const autosize = { minRows: 14, maxRows: 20 };
 
 const separator = "|";
 
