@@ -3,9 +3,21 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <el-form-item label="剧种" prop="juZhong">
-          <el-select v-model="formData.juZhong" filterable allow-create default-first-option :reserve-keyword="false"
-            placeholder="请输入剧种" :popper-append-to-body="false">
-            <el-option v-for="(item, index) in juZhongList" :key="index" :label="item" :value="item" />
+          <el-select
+            v-model="formData.juZhong"
+            filterable
+            allow-create
+            default-first-option
+            :reserve-keyword="false"
+            placeholder="请输入剧种"
+            :popper-append-to-body="false"
+          >
+            <el-option
+              v-for="(item, index) in juZhongList"
+              :key="index"
+              :label="item"
+              :value="item"
+            />
           </el-select>
         </el-form-item>
       </el-col>
@@ -23,34 +35,42 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="版本" prop="version">
-          <el-input v-model="formData.version" placeholder="唱段版本（可不填）"></el-input>
+          <el-input
+            v-model="formData.version"
+            placeholder="唱段版本（可不填）"
+          ></el-input>
         </el-form-item>
       </el-col>
     </el-row>
     <el-row :gutter="10">
       <el-col :span="12">
-        <el-form-item label="始时" prop="startTime">
-          <el-input v-model="formData.startTime" placeholder="请输入开始时间">
-            <template #append>
-              <el-button @click="setStartTime">启始</el-button>
-              <el-button @click="getStartTime">当前</el-button>
-            </template>
-          </el-input>
+        <el-form-item label="制作者" prop="by">
+          <el-input v-model="formData.by" placeholder="制作者"> </el-input>
         </el-form-item>
       </el-col>
       <el-col :span="12">
         <el-form-item label="时差" prop="offset">
-          <el-input-number v-model="formData.offset" placeholder="时差" :step="1"></el-input-number>
+          <el-input-number
+            v-model="formData.offset"
+            placeholder="时差"
+            :step="1"
+          ></el-input-number>
         </el-form-item>
       </el-col>
     </el-row>
 
     <el-form-item prop="content">
-      <el-button class="add-btn" type="primary" @click="addShowTime">
+      <el-button class="add-btn" type="primary" @click="handleAddTime">
         <span>添加时间</span>
       </el-button>
-      <el-input type="textarea" :autosize="autosize" v-model="formData.content" ref="contentRef" placeholder="请输入或复制唱词"
-        @paste="handlePaste">
+      <el-input
+        type="textarea"
+        :autosize="autosize"
+        v-model="formData.content"
+        ref="contentRef"
+        placeholder="请输入或复制唱词"
+        @paste="handlePaste"
+      >
       </el-input>
     </el-form-item>
     <el-form-item label="关键词" prop="searchKeys">
@@ -70,30 +90,43 @@ import { ElMessage, FormInstance } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useClipboard from "vue-clipboard3";
 import useWebSite from "../hooks/useWebSite";
-import { JUZHONGLIST, END_TAG_CONTENT } from "../data/XiquConstant";
+import {
+  JUZHONGLIST,
+  END_TAG_CONTENT,
+  SEPARATOR,
+  DEFAULT_START_LINE,
+  START_TAG_CONTENT,
+} from "../data/XiquConstant";
+
+import {
+  hasTag,
+  num2str,
+  getShowTime,
+  getLrc,
+  getPastedContent,
+  addShowTime
+} from "../hooks/changDuanUtil";
 
 const { getCurrentTime, setCurrentTime } = useWebSite();
 const { toClipboard } = useClipboard();
 
 const zimuFormRef = ref();
 const contentRef = ref();
-let textareaEl: HTMLTextAreaElement = undefined as unknown as HTMLTextAreaElement;
+let textareaEl: HTMLTextAreaElement = (undefined as unknown) as HTMLTextAreaElement;
 
 const juZhongList = reactive(JUZHONGLIST);
 
 const autosize = { minRows: 14, maxRows: 20 };
 
-const separator = "|";
-
-const formData = ref({
+const formData: Ref<ChangDuanFromType> = ref<ChangDuanFromType>({
   juZhong: juZhongList[0],
   juMu: "",
   title: "",
-  offset: -15,
+  offset: -9,
   content: "",
   version: "",
   searchKeys: "",
-  startTime: 0,
+  by: "戏曲字幕",
 });
 
 const storageKey = "__ZIMU_CHANGDUAN_FORM";
@@ -121,9 +154,9 @@ onMounted(() => {
 });
 
 const handlePlay = () => {
-  let time = getShowTime(formData.value.content, separator, textareaEl);
+  let time = getShowTime(formData.value.content, SEPARATOR, textareaEl);
   time && setCurrentTime(+time);
-}
+};
 
 const resetForm = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
@@ -131,60 +164,24 @@ const resetForm = (formEl: FormInstance | undefined) => {
   storageData();
 };
 
-const getStartTime = () => {
-  formData.value.startTime = getCurrentTime();
+const handleAddTime = () => {
+  formData.value.content = addShowTime(
+    formData.value.content,
+    textareaEl,
+    getCurrentTime() + SEPARATOR
+  );
 };
-const setStartTime = () => {
-  formData.value.startTime = 0;
-}
-
-const getShowTime = (value: string, separator: string, textareaEl: HTMLTextAreaElement) => {
-  let selectionEnd = textareaEl.selectionEnd;
-  let startIndex = value.substring(0, selectionEnd).lastIndexOf("\n") + 1;
-
-  let ei = value.substring(selectionEnd, value.length).indexOf("\n");
-  let endIndex = selectionEnd + ei;
-  if (ei == -1) { //表示到末尾
-    endIndex = value.length;
-  }
-  let timeStr = value.substring(startIndex, endIndex);
-  if (timeStr.includes(separator)) {
-    return timeStr.substring(0, timeStr.indexOf(separator));
-  }
-  return "";
-}
-
-const addShowTime = () => {
-  let i =
-    formData.value.content.substring(0, textareaEl.selectionEnd).lastIndexOf("\n") + 1;
-  textareaEl.setRangeText(getCurrentTime() + separator, i, i);
-  formData.value.content = textareaEl.value;
-  let j = formData.value.content.substring(i + 1).indexOf("\n") + i;
-  textareaEl.focus();
-  textareaEl.setSelectionRange(j + 2, j + 2);
-};
-
-const hasEndTag = (content: string) => {
-  return content.includes(END_TAG_CONTENT);
-}
 
 const handlePaste = (event: ClipboardEvent) => {
   if (formData.value.content.trim() == "") {
-    let paste = event?.clipboardData?.getData("text");
-    if (paste && paste.trim()) {
-      let list = paste.split("\n").filter((value) => value.trim()).map(value => value.replace(/\r/g, ""));
-      if (!hasEndTag(list[list.length - 1])) {
-        list.push(END_TAG_CONTENT);
-      }
-      formData.value.content = list.join("\n");
-    }
+    formData.value.content = getPastedContent(event);
     event.preventDefault();
   }
 };
 
 const handleCopy = async () => {
   try {
-    await toClipboard(getLrc());
+    await toClipboard(getLrc(formData.value));
     ElMessage({
       message: "已复制",
       type: "success",
@@ -193,56 +190,6 @@ const handleCopy = async () => {
     console.error(e);
     ElMessage.error("复制出错了, " + e.message);
   }
-};
-
-const getLrc = () => {
-  let list = [];
-
-  list.push("[ti:" + (formData.value.title || "") + "]");
-  list.push("[oti:" + (formData.value.title || "") + "]");
-  list.push("[jz:" + (formData.value.juZhong || "") + "]");
-  list.push("[jm:" + (formData.value.juMu || "") + "]");
-  list.push("[ojm:" + (formData.value.juMu || "") + "]");
-  list.push("[ver:" + (formData.value.version || "") + "]");
-  list.push("[offset:" + (formData.value.offset || 0) + "]");
-  list.push("[keys:" + (formData.value.searchKeys || "") + "]");
-
-  let contentList = formData.value.content.split("\n");
-  let startTime = formData.value.startTime;
-
-  for (let i = 0; i < contentList.length; i++) {
-    const element = contentList[i];
-    let ci = element.split(separator);
-
-    if (ci.length !== 2 || Number.isNaN(Number(ci[0]))) {
-      throw new Error(`${i} ${element} 格式化不正确`);
-    } else {
-      let time = Number(ci[0]) - startTime;
-      let changci = "[" + num2str(time, false) + "]" + ci[1];
-      list.push(changci);
-    }
-  }
-  return list.join("\n");
-};
-
-/**
- * hasHour 是否需要小时
- */
-const num2str = (num: number, hasHour: boolean | undefined) => {
-  num = Math.floor(num * 1000);
-  let h = Math.floor(num / 3600000);
-  let m = Math.floor(num / 60000);
-  let s = Math.floor((num % 60000) / 1000);
-  let ms = Math.floor((num % 1000) / 10);
-  let hStr = (h < 10 ? "0" + h : h) + ":";
-  return (
-    ((hasHour && hStr) || "") +
-    (m < 10 ? "0" + m : m) +
-    ":" +
-    (s < 10 ? "0" + s : s) +
-    "." +
-    (ms < 10 ? "0" + ms : ms)
-  );
 };
 
 const rules = {
@@ -271,13 +218,6 @@ const rules = {
     {
       required: true,
       message: "时差",
-      trigger: "blur",
-    },
-  ],
-  startTime: [
-    {
-      required: true,
-      message: "开始时间",
       trigger: "blur",
     },
   ],
