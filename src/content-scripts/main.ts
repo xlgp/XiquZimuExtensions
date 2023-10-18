@@ -4,6 +4,12 @@ import useZimuLayer from "../hooks/useZimuLayer";
 
 const { createVueApp } = useZimuLayer();
 
+const addScriptToBody = () => {
+  if (!document.scripts) {
+    document.body.append(document.createElement("script"));
+  }
+}
+
 chrome.runtime.onMessage.addListener(
   (
     message: any,
@@ -11,9 +17,9 @@ chrome.runtime.onMessage.addListener(
     sendResponse: (response?: any) => void
   ) => {
     if (message.key == 'create') { //创建
+      addScriptToBody();
       createVueApp();
     }
-
     sendResponse("ok");
   }
 );
