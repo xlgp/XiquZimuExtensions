@@ -1,19 +1,31 @@
 <template>
-  <video controls width="350">
-    <source src="http://localhost/video/%E5%89%AA%E5%8F%91%E8%AE%B0-%E9%87%87%E8%8D%AF%20(online-video-cutter.com).mp4" />
-  </video>
-  <ZimuLayer :layerInfo="layerInfo" />
+  <el-container>
+    <el-header>
+      <span>戏曲字幕 唱词制作</span>
+    </el-header>
+    <el-main>
+      <el-row :gutter="20">
+        <el-col :span="12"><Media /> </el-col>
+        <el-col :span="12"> <ChangDuanForm /></el-col>
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
 import { setCurrentWebSite } from "./hooks/useWebSite";
 
 setCurrentWebSite();
-
-const layerInfo = reactive({ isShow: false });
-
-const changeVisible = () => {
-  layerInfo.isShow = !layerInfo.isShow;
-};
 </script>
+<style lang="css">
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #1c0545;
+}
+header span {
+  color: #fff;
+  font-size: 1.5em;
+}
+</style>
