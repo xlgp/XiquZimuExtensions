@@ -120,6 +120,13 @@ const formData: Ref<ChangDuanFromType> = ref<ChangDuanFromType>({
   by: "戏曲字幕",
 });
 
+const props = defineProps({
+  autosize: {
+    type: Object,
+    default: { minRows: 14, maxRows: 14 },
+  },
+});
+
 const zimuFormRef = ref();
 const contentRef = ref<HTMLElement | null>(null);
 let textareaEl: HTMLTextAreaElement = (undefined as unknown) as HTMLTextAreaElement;
@@ -133,8 +140,6 @@ const {
   handlePlay,
   resetForm,
 } = useChangDuanHandler(formData, () => textareaEl, storageData);
-
-const autosize = { minRows: 14, maxRows: 20 };
 
 const rules = useChangDuanRules();
 
