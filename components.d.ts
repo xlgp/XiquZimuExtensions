@@ -5,8 +5,10 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Builder: typeof import('./src/views/changduan/builder/index.vue')['default']
     Changduan: typeof import('./src/views/changduan/index.vue')['default']
     ChangDuanForm: typeof import('./src/components/ChangDuanForm.vue')['default']
+    ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElContainer: typeof import('element-plus/es')['ElContainer']
@@ -20,9 +22,7 @@ declare module '@vue/runtime-core' {
     ElPopconfirm: typeof import('element-plus/es')['ElPopconfirm']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElSelect: typeof import('element-plus/es')['ElSelect']
-    ElTag: typeof import('element-plus/es')['ElTag']
-    ElTooltip: typeof import('element-plus/es')['ElTooltip']
-    Media: typeof import('./src/views/media/index.vue')['default']
+    Media: typeof import('./src/views/changduan/media/index.vue')['default']
     WebSiteRadioGroup: typeof import('./src/components/WebSiteRadioGroup.vue')['default']
     ZimuConfig: typeof import('./src/components/ZimuConfig.vue')['default']
     ZimuLayer: typeof import('./src/views/ZimuLayer.vue')['default']

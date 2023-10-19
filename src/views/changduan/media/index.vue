@@ -7,12 +7,7 @@
         <el-button @click="playVideoWithWeb">播放</el-button>
       </template>
     </el-input>
-    <label
-      class="drag-box"
-      for="file"
-      :ondrop="dropHandler"
-      :ondragover="(e:Event) => e.preventDefault()"
-    >
+    <label class="drag-box" for="file" :ondrop="dropHandler" :ondragover="(e: Event) => e.preventDefault()">
       <span>点我选择音视频，或拖拽音视频至此</span>
     </label>
   </div>
@@ -33,7 +28,8 @@ const { changeHandler, playVideoWithWeb, dropHandler } = useHandlers(
 <style lang="css">
 .drag-box {
   display: flex;
-  height: 200px;
+  height: 180px;
+  margin-top: 6px;
   border: 1px dashed var(--el-color-primary);
   border-radius: 4px;
   justify-content: center;
@@ -45,5 +41,8 @@ const { changeHandler, playVideoWithWeb, dropHandler } = useHandlers(
 .video {
   height: 400px;
   width: 100%;
+  background: #ece7f4;
+  border: 1px dashed #120b1d;
+  border-radius: 4px;
 }
 </style>
