@@ -1,15 +1,17 @@
 import { Ref } from "vue";
 import { equalFiles } from "../utils/util";
 
-export default (videoRef: Ref<HTMLMediaElement>, videoSrc: Ref<string>) => {
+export default (videoRef: Ref<HTMLMediaElement | undefined>, videoSrc: Ref<string>) => {
 
     let currentFile: File;
 
     const playVideoWithWeb = () => playVideo(videoSrc.value);
 
     const playVideo = (url: string) => {
-        videoRef.value.src = url;
-        videoRef.value.play();
+        if (videoRef.value) {
+            videoRef.value.src = url;
+            videoRef.value.play();
+        }
     };
 
     const playVideoWithFile = (file: File | undefined | null) => {

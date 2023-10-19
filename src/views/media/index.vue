@@ -11,7 +11,7 @@
       class="drag-box"
       for="file"
       :ondrop="dropHandler"
-      :ondragover="(e) => e.preventDefault()"
+      :ondragover="(e:Event) => e.preventDefault()"
     >
       <span>点我选择音视频，或拖拽音视频至此</span>
     </label>
@@ -21,11 +21,14 @@
 import { ref, onMounted } from "vue";
 import useHandlers from "./composables/useHandlers";
 
-const videoRef = ref<HTMLMediaElement>();
+const videoRef = ref<HTMLMediaElement | undefined>();
 
 const videoSrc = ref<string>("");
 
-const { ondragover, changeHandler, playVideoWithWeb,dropHandler } = useHandlers(videoRef,videoSrc);
+const { ondragover, changeHandler, playVideoWithWeb, dropHandler } = useHandlers(
+  videoRef,
+  videoSrc
+);
 </script>
 <style lang="css">
 .drag-box {
