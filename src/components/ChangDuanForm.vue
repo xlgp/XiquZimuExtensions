@@ -122,7 +122,7 @@ const formData: Ref<ChangDuanFromType> = ref<ChangDuanFromType>({
 
 const props = defineProps({
   autosize: {
-    type: Object,
+    type: [Object, Boolean],
     default: { minRows: 15, maxRows: 15 },
   },
 });
