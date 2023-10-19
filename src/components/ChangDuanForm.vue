@@ -78,7 +78,12 @@
     </el-form-item>
     <el-form-item>
       <el-button plain type="primary" @click="handleCopy">复制</el-button>
-      <el-button @click="resetForm(zimuFormRef)">重置</el-button>
+      <el-popconfirm title="重置唱段内容吗？" @confirm="resetForm(zimuFormRef)">
+        <template #reference>
+          <el-button>重置</el-button>
+        </template>
+      </el-popconfirm>
+
       <el-button @click="handlePlay">当前时间播放</el-button>
       <el-tooltip
         effect="dark"
