@@ -11,7 +11,7 @@
       class="drag-box"
       for="file"
       :ondrop="dropHandler"
-      :ondragover="dragOverHandler"
+      :ondragover="(e) => e.preventDefault()"
     >
       <span>点我选择音视频，或拖拽音视频至此</span>
     </label>
@@ -19,75 +19,13 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import useHandlers from "./composables/useHandlers";
 
-const videoRef = ref();
+const videoRef = ref<HTMLMediaElement>();
 
-let currentFile: File = undefined;
+const videoSrc = ref<string>("");
 
-const videoSrc = ref("");
-
-const playVideoWithWeb = () => playVideo(new URL(videoSrc.value));
-
-const equalFiles = (file1: File, file2: File) => {
-  if (file1 == file2) {
-    return true;
-  }
-  if (!file1 || !file2) {
-    return false;
-  }
-
-  return (
-    file1.name == file2.name &&
-    file2.type == file1.type &&
-    file1.lastModified &&
-    file2.lastModified
-  );
-};
-
-const playVideo = (url: URL) => {
-  videoRef.value.src = url;
-  videoRef.value.play();
-};
-
-const playVideoWithFile = (file: File) => {
-  if (!file) {
-    console.warn("没有选择音视频文件");
-    return;
-  }
-  if (!equalFiles(currentFile, file)) {
-    currentFile = file;
-    playVideo(URL.createObjectURL(file));
-  }
-};
-
-const changeHandler = (e: Event) => {
-  if (e.target.files.length > 0) {
-    playVideoWithFile(e.target.files[0]);
-  }
-};
-
-const dropHandler = (ev: Event) => {
-  ev.preventDefault();
-  let file;
-  if (ev.dataTransfer.items) {
-    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
-      if (ev.dataTransfer.items[i].kind === "file") {
-        file = ev.dataTransfer.items[i].getAsFile();
-        break;
-      }
-    }
-  } else {
-    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
-      file = ev.dataTransfer.files[i];
-      break;
-    }
-  }
-  playVideoWithFile(file);
-};
-
-const dragOverHandler = (e: Event) => {
-  e.preventDefault();
-};
+const { ondragover, changeHandler, playVideoWithWeb,dropHandler } = useHandlers(videoRef,videoSrc);
 </script>
 <style lang="css">
 .drag-box {
