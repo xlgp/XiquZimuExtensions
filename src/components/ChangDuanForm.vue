@@ -132,7 +132,7 @@ const {
   handlePaste,
   handlePlay,
   resetForm,
-} = useChangDuanHandler(formData, textareaEl, storageData);
+} = useChangDuanHandler(formData, () => textareaEl, storageData);
 
 const autosize = { minRows: 14, maxRows: 20 };
 

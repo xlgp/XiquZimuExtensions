@@ -6,13 +6,13 @@ import { getShowTime, addShowTime, getPastedContent, getLrc } from "./changDuanU
 import useClipboard from "vue-clipboard3";
 import useWebSite from "../hooks/useWebSite";
 
-const { toClipboard } = useClipboard();
-const { getCurrentTime, setCurrentTime } = useWebSite();
+export default (formData: Ref<ChangDuanFromType>, getTextareaEl: () => HTMLTextAreaElement, storageData: () => void) => {
 
-export default (formData: Ref<ChangDuanFromType>, textareaEl: HTMLTextAreaElement, storageData: () => void) => {
+    const { toClipboard } = useClipboard();
+    const { getCurrentTime, setCurrentTime } = useWebSite();
 
     const handlePlay = () => {
-        let time = getShowTime(formData.value.content, SEPARATOR, textareaEl);
+        let time = getShowTime(formData.value.content, SEPARATOR, getTextareaEl());
         time && setCurrentTime(+time);
     };
 
@@ -25,7 +25,7 @@ export default (formData: Ref<ChangDuanFromType>, textareaEl: HTMLTextAreaElemen
     const handleAddTime = () => {
         formData.value.content = addShowTime(
             formData.value.content,
-            textareaEl,
+            getTextareaEl(),
             getCurrentTime() + SEPARATOR
         );
     };
