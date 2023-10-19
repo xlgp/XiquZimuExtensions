@@ -145,7 +145,7 @@ const rules = useChangDuanRules();
 
 onMounted(() => {
   init();
-  textareaEl = contentRef?.value?.$el.firstElementChild;
+  textareaEl = contentRef.value.$el.firstElementChild;
 });
 </script>
 <style scoped>
