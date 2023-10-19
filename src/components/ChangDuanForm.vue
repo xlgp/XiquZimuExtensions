@@ -85,12 +85,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, Ref } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
 import useChangDuanRules from "../hooks/useChangDuanRules";
 import useInitChangDuan from "../hooks/useInitChangDuan";
 import useChangDuanHandler from "../hooks/useChangDuanHandler";
+import { ChangDuanFromType } from "../data/data.d";
 import {
   JUZHONGLIST,
   END_TAG_CONTENT,
@@ -128,10 +129,10 @@ const props = defineProps({
 });
 
 const zimuFormRef = ref();
-const contentRef = ref<HTMLElement | null>(null);
+const contentRef = ref();
 let textareaEl: HTMLTextAreaElement = (undefined as unknown) as HTMLTextAreaElement;
 
-const { init, storageData } = useInitChangDuan(formData, contentRef);
+const { init, storageData } = useInitChangDuan(formData);
 
 const {
   handleAddTime,
