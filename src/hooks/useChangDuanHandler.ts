@@ -37,17 +37,27 @@ export default (formData: Ref<ChangDuanFromType>, getTextareaEl: () => HTMLTextA
         }
     };
 
-    const handleCopy = async () => {
-        try {
-            await toClipboard(getLrc(formData.value));
-            ElMessage({
-                message: "已复制",
-                type: "success",
-            });
-        } catch (e: any) {
-            console.error(e);
-            ElMessage.error("复制出错了, " + e.message);
+    const handleCopy = async (formEl: FormInstance | undefined) => {
+        if (!formEl) {
+            return;
         }
+        await formEl.validate(async (valid) => {
+            if (valid) {
+                try {
+                    await toClipboard(getLrc(formData.value));
+                    ElMessage({
+                        message: "已复制",
+                        type: "success",
+                    });
+                } catch (e: any) {
+                    console.error(e);
+                    ElMessage.error("复制出错了, " + e.message);
+                }
+            } else {
+                ElMessage.error("唱段校验出错");
+            }
+        })
+
     };
     return {
         handleAddTime, handleCopy, handlePaste, handlePlay, resetForm

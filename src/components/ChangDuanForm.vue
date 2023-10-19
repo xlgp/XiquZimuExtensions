@@ -52,7 +52,7 @@
       <el-input v-model="formData.searchKeys" placeholder="关键词以逗号隔开"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button plain type="primary" @click="handleCopy">复制</el-button>
+      <el-button plain type="primary" @click="handleCopy(zimuFormRef)">复制</el-button>
       <el-popconfirm title="重置唱段内容吗？" @confirm="resetForm(zimuFormRef)">
         <template #reference>
           <el-button>重置</el-button>
@@ -68,7 +68,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, Ref } from "vue";
+import { ref, onMounted, Ref } from "vue";
 import useChangDuanRules from "../hooks/useChangDuanRules";
 import useInitChangDuan from "../hooks/useInitChangDuan";
 import useChangDuanHandler from "../hooks/useChangDuanHandler";
