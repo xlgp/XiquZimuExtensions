@@ -88,8 +88,9 @@
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
-import useClipboard from "vue-clipboard3";
-import useWebSite from "../hooks/useWebSite";
+import useChangDuanRules from "../hooks/useChangDuanRules";
+import useInitChangDuan from "../hooks/useInitChangDuan";
+import useChangDuanHandler from "../hooks/useChangDuanHandler";
 import {
   JUZHONGLIST,
   END_TAG_CONTENT,
@@ -104,20 +105,10 @@ import {
   getShowTime,
   getLrc,
   getPastedContent,
-  addShowTime
+  addShowTime,
 } from "../hooks/changDuanUtil";
 
-const { getCurrentTime, setCurrentTime } = useWebSite();
-const { toClipboard } = useClipboard();
-
-const zimuFormRef = ref();
-const contentRef = ref();
-let textareaEl: HTMLTextAreaElement = (undefined as unknown) as HTMLTextAreaElement;
-
 const juZhongList = reactive(JUZHONGLIST);
-
-const autosize = { minRows: 14, maxRows: 20 };
-
 const formData: Ref<ChangDuanFromType> = ref<ChangDuanFromType>({
   juZhong: juZhongList[0],
   juMu: "",
@@ -129,106 +120,28 @@ const formData: Ref<ChangDuanFromType> = ref<ChangDuanFromType>({
   by: "戏曲字幕",
 });
 
-const storageKey = "__ZIMU_CHANGDUAN_FORM";
-function init() {
-  let storageValue = localStorage.getItem(storageKey);
-  if (storageValue) {
-    formData.value = JSON.parse(storageValue);
-  }
-}
+const zimuFormRef = ref();
+const contentRef = ref<HTMLElement | null>(null);
+let textareaEl: HTMLTextAreaElement = (undefined as unknown) as HTMLTextAreaElement;
 
-function storageData() {
-  localStorage.setItem(storageKey, JSON.stringify(formData.value));
-}
+const { init, storageData } = useInitChangDuan(formData, contentRef);
 
-function unloadListener() {
-  window.addEventListener("unload", function (event) {
-    storageData();
-  });
-}
+const {
+  handleAddTime,
+  handleCopy,
+  handlePaste,
+  handlePlay,
+  resetForm,
+} = useChangDuanHandler(formData, textareaEl, storageData);
+
+const autosize = { minRows: 14, maxRows: 20 };
+
+const rules = useChangDuanRules();
 
 onMounted(() => {
   init();
-  unloadListener();
-  textareaEl = contentRef.value.$el.firstElementChild;
+  textareaEl = contentRef?.value?.$el.firstElementChild;
 });
-
-const handlePlay = () => {
-  let time = getShowTime(formData.value.content, SEPARATOR, textareaEl);
-  time && setCurrentTime(+time);
-};
-
-const resetForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.resetFields();
-  storageData();
-};
-
-const handleAddTime = () => {
-  formData.value.content = addShowTime(
-    formData.value.content,
-    textareaEl,
-    getCurrentTime() + SEPARATOR
-  );
-};
-
-const handlePaste = (event: ClipboardEvent) => {
-  if (formData.value.content.trim() == "") {
-    formData.value.content = getPastedContent(event);
-    event.preventDefault();
-  }
-};
-
-const handleCopy = async () => {
-  try {
-    await toClipboard(getLrc(formData.value));
-    ElMessage({
-      message: "已复制",
-      type: "success",
-    });
-  } catch (e: any) {
-    console.error(e);
-    ElMessage.error("复制出错了, " + e.message);
-  }
-};
-
-const rules = {
-  juZhong: [
-    {
-      required: true,
-      message: "请输入剧种",
-      trigger: "blur",
-    },
-  ],
-  juMu: [
-    {
-      required: true,
-      message: "请输入剧目",
-      trigger: "blur",
-    },
-  ],
-  title: [
-    {
-      required: true,
-      message: "请输入选段",
-      trigger: "blur",
-    },
-  ],
-  offset: [
-    {
-      required: true,
-      message: "时差",
-      trigger: "blur",
-    },
-  ],
-  content: [
-    {
-      required: true,
-      message: "唱词",
-      trigger: "blur",
-    },
-  ],
-};
 </script>
 <style scoped>
 .add-btn {
