@@ -80,6 +80,13 @@
       <el-button plain type="primary" @click="handleCopy">复制</el-button>
       <el-button @click="resetForm(zimuFormRef)">重置</el-button>
       <el-button @click="handlePlay">当前时间播放</el-button>
+      <el-tooltip
+        effect="dark"
+        content="播放唱词输入框中光标所在行（并且有时间）"
+        placement="top"
+      >
+        <el-tag type="info" style="margin-left: 10px">？</el-tag>
+      </el-tooltip>
     </el-form-item>
   </el-form>
 </template>
