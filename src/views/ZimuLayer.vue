@@ -10,7 +10,7 @@
   >
   <el-config-provider :z-index="zIndex">
     <el-scrollbar height="83vh">
-      <el-tabs style="margin: 20px">
+      <el-tabs style="margin: 0 20px">
         <el-tab-pane label="功能">
           <ChangDuanForm />
         </el-tab-pane>
