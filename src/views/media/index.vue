@@ -25,7 +25,7 @@ const videoRef = ref<HTMLMediaElement | undefined>();
 
 const videoSrc = ref<string>("");
 
-const { ondragover, changeHandler, playVideoWithWeb, dropHandler } = useHandlers(
+const { changeHandler, playVideoWithWeb, dropHandler } = useHandlers(
   videoRef,
   videoSrc
 );

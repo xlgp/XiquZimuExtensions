@@ -3,21 +3,9 @@
     <el-row :gutter="10">
       <el-col :span="12">
         <el-form-item label="剧种" prop="juZhong">
-          <el-select
-            v-model="formData.juZhong"
-            filterable
-            allow-create
-            default-first-option
-            :reserve-keyword="false"
-            placeholder="请输入剧种"
-            :popper-append-to-body="false"
-          >
-            <el-option
-              v-for="(item, index) in juZhongList"
-              :key="index"
-              :label="item"
-              :value="item"
-            />
+          <el-select v-model="formData.juZhong" filterable allow-create default-first-option :reserve-keyword="false"
+            placeholder="请输入剧种" :popper-append-to-body="false">
+            <el-option v-for="(item, index) in juZhongs" :key="index" :label="item" :value="item" />
           </el-select>
         </el-form-item>
       </el-col>
@@ -35,10 +23,7 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="版本" prop="version">
-          <el-input
-            v-model="formData.version"
-            placeholder="唱段版本（可不填）"
-          ></el-input>
+          <el-input v-model="formData.version" placeholder="唱段版本（可不填）"></el-input>
         </el-form-item>
       </el-col>
     </el-row>
@@ -50,11 +35,7 @@
       </el-col>
       <el-col :span="12">
         <el-form-item label="时差" prop="offset">
-          <el-input-number
-            v-model="formData.offset"
-            placeholder="时差"
-            :step="1"
-          ></el-input-number>
+          <el-input-number v-model="formData.offset" placeholder="时差" :step="1"></el-input-number>
         </el-form-item>
       </el-col>
     </el-row>
@@ -63,14 +44,8 @@
       <el-button class="add-btn" type="primary" @click="handleAddTime">
         <span>添加时间</span>
       </el-button>
-      <el-input
-        type="textarea"
-        :autosize="autosize"
-        v-model="formData.content"
-        ref="contentRef"
-        placeholder="请输入或复制唱词"
-        @paste="handlePaste"
-      >
+      <el-input type="textarea" :autosize="autosize" v-model="formData.content" ref="contentRef" placeholder="请输入或复制唱词"
+        @paste="handlePaste">
       </el-input>
     </el-form-item>
     <el-form-item label="关键词" prop="searchKeys">
@@ -85,11 +60,7 @@
       </el-popconfirm>
 
       <el-button @click="handlePlay">当前时间播放</el-button>
-      <el-tooltip
-        effect="dark"
-        content="播放唱词输入框中光标所在行（并且有时间）"
-        placement="top"
-      >
+      <el-tooltip effect="dark" content="播放唱词输入框中光标所在行（并且有时间）" placement="top">
         <el-tag type="info" style="margin-left: 10px">？</el-tag>
       </el-tooltip>
     </el-form-item>
@@ -98,32 +69,13 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, Ref } from "vue";
-import { ElMessage, FormInstance } from "element-plus";
-import "element-plus/theme-chalk/el-message.css";
 import useChangDuanRules from "../hooks/useChangDuanRules";
 import useInitChangDuan from "../hooks/useInitChangDuan";
 import useChangDuanHandler from "../hooks/useChangDuanHandler";
 import { ChangDuanFromType } from "../data/data.d";
-import {
-  JUZHONGLIST,
-  END_TAG_CONTENT,
-  SEPARATOR,
-  DEFAULT_START_LINE,
-  START_TAG_CONTENT,
-} from "../data/XiquConstant";
 
-import {
-  hasTag,
-  num2str,
-  getShowTime,
-  getLrc,
-  getPastedContent,
-  addShowTime,
-} from "../hooks/changDuanUtil";
-
-const juZhongList = reactive(JUZHONGLIST);
 const formData: Ref<ChangDuanFromType> = ref<ChangDuanFromType>({
-  juZhong: juZhongList[0],
+  juZhong: "",
   juMu: "",
   title: "",
   offset: -9,
@@ -138,6 +90,10 @@ const props = defineProps({
     type: [Object, Boolean],
     default: { minRows: 15, maxRows: 15 },
   },
+  juZhongs: {
+    type: Array<string>,
+    default: []
+  }
 });
 
 const zimuFormRef = ref();
