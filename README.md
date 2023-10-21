@@ -1,16 +1,20 @@
-# Vue 3 + TypeScript + Vite
+# 戏曲字幕Chrome插件
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+> ## 下载插件
+1. 去[发行版页面](https://gitee.com/xlgp/XiquZimuExtensions/releases)下载最新的文件。
+2. 解压文件。
 
-## Recommended IDE Setup
+> ## 添加插件至Chrome浏览器
+3. 打开浏览器扩展页面；
+4. 打开右上角开发者模式；
+5. 点击 ***加载已解压的扩展程序***，选择戏曲字幕插件文件夹下的 ***dist*** 文件夹。
+![添加插件](https://gitee.com/xlgp/static/raw/master/XiquZimuExtensions/%E6%88%8F%E6%9B%B2%E5%AD%97%E5%B9%95%E6%8F%92%E4%BB%B6-1.PNG)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+> ## 固定插件
+如下图，点击`1`，`2`，会出现 `3`。
+![固定插件](https://gitee.com/xlgp/static/raw/master/XiquZimuExtensions/%E6%88%8F%E6%9B%B2%E5%AD%97%E5%B9%95%E6%8F%92%E4%BB%B6-4.png)
 
-## Type Support For `.vue` Imports in TS
+> ## 使用插件
+插件固定好后，就可以打开有视频的页面，再点击插件小图标，就会打开插件弹层，可以使用插件了。
+![示例](https://gitee.com/xlgp/static/raw/master/XiquZimuExtensions/%E6%88%8F%E6%9B%B2%E5%AD%97%E5%B9%95%E6%8F%92%E4%BB%B6-3.PNG)
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
-
-1. Run `Extensions: Show Built-in Extensions` from VS Code's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VS Code window by running `Developer: Reload Window` from the command palette.
-
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
